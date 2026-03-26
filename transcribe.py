@@ -17,7 +17,7 @@ def download_audio(url: str, output_path: str = "audio.mp3") -> str:
     return output_path
 
 
-def transcribe(audio_path: str, model_size: str = "large-v3-turbo", language: str = "ja") -> list:
+def transcribe(audio_path: str, model_size: str = "small", language: str = "ja") -> list:
     print(f"[2/3] Loading model: {model_size}")
     from faster_whisper import WhisperModel
     model = WhisperModel(model_size, device="cpu", compute_type="int8")
