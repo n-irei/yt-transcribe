@@ -50,17 +50,19 @@ def save_output(texts: list, url: str) -> str:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python transcribe.py <YouTube URL>")
-        print("Example: python transcribe.py https://www.youtube.com/watch?v=XXXX")
-        sys.exit(1)
+    import argparse
+    parser = argparse.ArgumentParser(description="YouTube音声文字起こしツール")
+    parser.add_argument("url", help="YouTube URL")
+    parser.add_argument("--model", default="base",
+                        help="Whisperモデルサイズ (default: base) "
+                             "例: tiny, base, small, medium, large-v3-turbo")
+    args = parser.parse_args()
 
-    url = sys.argv[1]
     audio_path = "audio.mp3"
 
-    download_audio(url, audio_path)
-    texts = transcribe(audio_path)
-    save_output(texts, url)
+    download_audio(args.url, audio_path)
+    texts = transcribe(audio_path, model_size=args.model)
+    save_output(texts, args.url)
 
     # 音声ファイル削除
     if os.path.exists(audio_path):
